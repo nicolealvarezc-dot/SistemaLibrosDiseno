@@ -1,83 +1,263 @@
 ====================================================
-  SISTEMA DE GESTIÓN DE PROYECTOS DE DISEÑO
+  SISTEMA DE GESTIÓN DE LIBROS DE DISEÑO
   CARRERA: DISEÑO DIGITAL
-  INTEGRANTES: NICOLE ALVAREZ / REYNA YANA  
+  INTEGRANTES: NICOLE ALVAREZ 
   README — Instrucciones de compilación y ejecución
 ====================================================
 
+====================================================
+      SISTEMA DE GESTIÓN DE LIBROS DE DISEÑO
+====================================================
 
-REQUISITOS PREVIOS
-------------------
-- Compilador g++ con soporte C++11 o superior
-- Sistema operativo Windows (el sistema usa system("cls") para limpiar pantalla)
-- Tener instalado MinGW o TDM-GCC si se compila desde Windows sin IDE
-
-
-ARCHIVOS FUENTE
----------------
-Asegúrese de tener todos estos archivos en la misma carpeta:
-
-  main.cpp
-  Menu.h
-  Menu.cpp
-  Utilidades.h
-  Utilidades.cpp
-  Proyecto.h
-  ProyectoLogica.h
-  ProyectoLogica.cpp
-  ProyectoDatos.h
-  ProyectoDatos.cpp
-
-
-COMPILACIÓN
+DESCRIPCIÓN
 -----------
-Abra una terminal (cmd o PowerShell) en la carpeta del proyecto
-y ejecute el siguiente comando:
+Aplicación de consola desarrollada en C++ para la gestión de
+libros de diseño mediante archivos CSV.
 
-  g++ -std=c++11 main.cpp Menu.cpp Utilidades.cpp ProyectoLogica.cpp ProyectoDatos.cpp -o SistemaGestion
+El sistema permite:
 
-Esto generará el ejecutable: SistemaGestion.exe
+- Registrar libros
+- Mostrar libros almacenados
+- Modificar registros
+- Eliminar registros
+- Buscar libros por ISBN
+- Ordenar registros
+- Intercalar archivos de libros
+- Cargar datos iniciales
+- Generar reportes PDF
+
+Todos los registros son almacenados en archivos CSV utilizando
+el siguiente formato:
+
+ISBN|Titulo|Autor|Genero|Anio|Precio
 
 
+====================================================
+ESTRUCTURA DEL PROYECTO
+====================================================
+
+main.cpp
+    Punto de entrada del programa.
+
+Menu.cpp / Menu.h
+    Menú principal y navegación del sistema.
+
+Libro.h
+    Definición de la estructura Libro.
+
+Crud.cpp / Crud.h
+    Operaciones de registro, consulta, modificación
+    y eliminación de libros.
+
+Busquedas.cpp / Busquedas.h
+    Implementación de búsquedas:
+      - Secuencial
+      - Binaria Iterativa
+      - Binaria Recursiva
+
+Ordenamiento.cpp / Ordenamiento.h
+    Ordenamiento de registros por:
+      - ISBN
+      - Título
+      - Autor
+
+Intercalacion.cpp / Intercalacion.h
+    Fusión e intercalación de archivos de libros.
+
+ProyectoDatos.cpp / ProyectoDatos.h
+    Lectura y escritura de archivos CSV.
+
+Utilidades.cpp / Utilidades.h
+    Funciones auxiliares de validación y manejo
+    de consola.
+
+generaPDF.cpp / generaPDF.h
+    Generación de reportes PDF.
+
+pdfgen.c / pdfgen.h
+    Biblioteca utilizada para la creación de PDFs.
+
+
+====================================================
+REQUISITOS
+====================================================
+
+- Compilador g++ con soporte para C++11 o superior.
+- Sistema operativo Windows.
+- Biblioteca pdfgen incluida en el proyecto.
+- Consola con soporte UTF-8.
+
+El programa utiliza:
+
+    windows.h
+    system("cls")
+
+por lo que está orientado a Windows.
+
+
+====================================================
+COMPILACIÓN
+====================================================
+
+Compilar todos los archivos fuente:
+
+g++ -std=c++11 ^
+main.cpp ^
+Menu.cpp ^
+Crud.cpp ^
+Busquedas.cpp ^
+Ordenamiento.cpp ^
+Intercalacion.cpp ^
+ProyectoDatos.cpp ^
+Utilidades.cpp ^
+generaPDF.cpp ^
+pdfgen.c ^
+-o SistemaLibros
+
+O en una sola línea:
+
+g++ -std=c++11 main.cpp Menu.cpp Crud.cpp Busquedas.cpp Ordenamiento.cpp Intercalacion.cpp ProyectoDatos.cpp Utilidades.cpp generaPDF.cpp pdfgen.c -o SistemaLibros
+
+
+====================================================
 EJECUCIÓN
----------
-Una vez compilado, ejecute el programa con:
+====================================================
 
-  ./SistemaGestion
+Ejecutar:
 
-O simplemente haciendo doble clic en SistemaGestion.exe desde el explorador.
+SistemaLibros.exe
 
+o
 
-ARCHIVOS DE DATOS
------------------
-El programa trabaja con archivos de texto en la misma carpeta del ejecutable:
-
-  proyectos.txt         — Base de datos principal. Se crea automáticamente
-                          al registrar el primer proyecto.
-
-  nuevosProyectos.txt   — Archivo necesario para usar la opción 9
-                          (Intercalar archivos). Debe crearlo manualmente
-                          con el mismo formato que proyectos.txt.
-
-Formato de cada línea en los archivos de datos:
-  id|nombre|categoria|cliente|anio|presupuesto
-
-  Ejemplo:
-  1|Rediseño App Bancaria|UX|Banco Nacional|2024|15000.5
+./SistemaLibros
 
 
-NOTAS
------
-- La búsqueda binaria (opción 6) requiere que los datos estén
-  ordenados por ID (opción 7) antes de usarse.
+====================================================
+ESTRUCTURA DE LOS DATOS
+====================================================
 
-- La intercalación (opción 9) fusiona proyectos.txt con
-  nuevosProyectos.txt, ordena el resultado por ID y reemplaza
-  el archivo principal.
+Archivo principal:
 
-- Si proyectos.txt no existe al iniciar, algunas opciones
-  mostrarán el mensaje "Error al abrir archivos". Registre
-  al menos un proyecto primero (opción 1).
+libros.csv
 
+Formato de registro:
+
+ISBN|Titulo|Autor|Genero|Anio|Precio
+
+Ejemplo:
+
+1001|Diseño UX Moderno|Alan Cooper|UX|2024|45.50
+
+
+====================================================
+ARCHIVOS UTILIZADOS
+====================================================
+
+libros.csv
+    Base de datos principal.
+
+librosInicial.csv
+    Datos iniciales para carga masiva.
+
+nuevosLibros.csv
+    Archivo utilizado para pruebas de intercalación.
+
+librosFusionados_1.csv
+    Archivo generado por la intercalación ordenada.
+
+Reporte_libros.pdf
+    Reporte PDF generado por el sistema.
+
+
+====================================================
+FUNCIONALIDADES DEL MENÚ
+====================================================
+
+1. Registrar Libro
+   Agrega un nuevo libro.
+   El ISBN debe ser único.
+
+2. Mostrar Libros
+   Lista todos los registros almacenados.
+
+3. Modificar Libro
+   Actualiza los datos de un libro existente.
+
+4. Eliminar Libro
+   Elimina un libro mediante su ISBN.
+
+5. Búsqueda de Libro
+
+   5.1 Búsqueda Secuencial
+       Recorre los registros uno por uno.
+
+   5.2 Búsqueda Binaria Iterativa
+       Requiere que los registros estén
+       ordenados por ISBN.
+
+   5.3 Búsqueda Binaria Recursiva
+       Requiere que los registros estén
+       ordenados por ISBN.
+
+6. Ordenamiento de Registros
+
+   - Ordenar por ISBN
+   - Ordenar por Título
+   - Ordenar por Autor
+
+7. Intercalar Archivos
+
+   Fusiona:
+       libros.csv
+       nuevosLibros.csv
+
+   y genera:
+
+       librosFusionados_1.csv
+
+8. Cargar Libros Iniciales
+
+   Copia los registros desde:
+
+       librosInicial.csv
+
+   hacia:
+
+       libros.csv
+
+9. Crear PDF
+
+   Genera el archivo:
+
+       Reporte_libros.pdf
+
+   con todos los registros almacenados.
+
+
+====================================================
+VALIDACIONES IMPLEMENTADAS
+====================================================
+
+- ISBN único.
+- Campos de texto obligatorios.
+- Validación de enteros.
+- Validación de números decimales.
+- Manejo de archivos inexistentes.
+- Verificación de ordenamiento para
+  búsquedas binarias.
+
+
+====================================================
+OBSERVACIONES
+====================================================
+
+- Las búsquedas binarias solo funcionan cuando
+  el archivo está ordenado por ISBN.
+
+- El sistema almacena la información utilizando
+  el carácter "|" como separador de campos.
+
+- La generación del PDF utiliza la biblioteca
+  pdfgen incluida en el proyecto.
 
 ====================================================
